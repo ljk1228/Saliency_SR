@@ -1,0 +1,153 @@
+import os
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+import pickle
+import torch
+
+from transformers import AdamW
+from transformers import get_linear_schedule_with_warmup
+
+import config_step as config
+from dataset_step import Dataset
+from model_step import SentenceClassification1, get_type_rep
+from utils import save_model
+from salient_evluation_step import SaliencyInterpreter,IntegratedGradient
+from salient_evluation_step import salient
+import warnings
+from sklearn import metrics
+from sklearn.metrics import classification_report
+from sklearn.metrics import multilabel_confusion_matrix
+import numpy as np
+warnings.filterwarnings('ignore')
+def load_dataset():
+    filename = 'data/data_step.pk'
+    data = pickle.load(open(filename, 'rb'))
+    return data['train'], data['val'], data['test']
+
+def evaluate(model, device, testset):
+    golds = []
+    predicts = []
+
+    for batch in testset.get_tqdm(device, False):
+        data_x, data_x_mask, data_labels, data_span, offset1, pro1, appendix = batch
+        instances = [[data_x[i], data_x_mask[i], data_labels[i], offset1[i], pro1[i]] for i in range(len(data_x))]
+        instances = [list(map(lambda x: x.unsqueeze(0), x)) for x in instances]  # 在第一个位置增加维度，构成一个新的列表
+
+        # 把显著性归因值转为和data_x一样的tensor形式
+        res = ig.saliency_interpret(instances)
+        a = list(res.values())  # 获取dict的所有value
+        res_value = []
+        for i in a:
+            res_value.append(i['grad_input_1'])
+        salience = torch.Tensor(res_value)
+
+        logits = model.compute_logits(data_x, data_x_mask, offset1, pro1, salience)
+        logits = torch.nn.Sigmoid()(logits)
+        golds.extend(data_labels.detach().cpu().numpy())
+        predicts.extend(logits.detach().cpu().numpy())
+    label_list = ['RST', 'CTN', 'BAC', 'PUR', 'GAP', 'MTD', 'IMP', 'CLN']
+    accuracy = metrics.accuracy_score(golds, (np.array(predicts) > 0.3).astype(int))
+    f1_score_micro = metrics.f1_score(golds, (np.array(predicts) > 0.3).astype(int), average='micro')
+    print(f"Accuracy Score = {accuracy}", f"F1 Score (Micro) = {f1_score_micro}")
+    print(classification_report(golds, (np.array(predicts) > 0.3).astype(int), target_names=label_list,digits=4))
+
+def evaluate1(model, device, testset):
+    golds = []
+    predicts = []
+
+    for batch in testset.get_tqdm(device, False):
+        data_x, data_x_mask, data_labels, data_span, offset1, pro1, appendix = batch
+        instances = [[data_x[i], data_x_mask[i], data_labels[i], offset1[i], pro1[i]] for i in range(len(data_x))]
+        instances = [list(map(lambda x: x.unsqueeze(0), x)) for x in instances]  # 在第一个位置增加维度，构成一个新的列表
+
+        # 把显著性归因值转为和data_x一样的tensor形式
+        res = ig.saliency_interpret(instances)
+        a = list(res.values())  # 获取dict的所有value
+        res_value = []
+        for i in a:
+            res_value.append(i['grad_input_1'])
+        salience = torch.Tensor(res_value)
+
+        logits = model.compute_logits(data_x, data_x_mask, offset1, pro1, salience)
+        logits = torch.nn.Sigmoid()(logits)
+        golds.extend(data_labels.detach().cpu().numpy())
+        predicts.extend(logits.detach().cpu().numpy())
+
+
+    n_gold, n_predict, n_correct = 0, 0, 0
+    th = 0.3
+    for g, p in zip(golds, predicts):
+        n_gold += sum(g)
+        n_predict += sum(p >= th)  # 预测为正
+        n_correct += sum(g * (p > th))  # 正确预测为正
+
+    p = n_correct / n_predict
+    r = n_correct / n_gold
+    f1 = 2 * p * r / (p + r)
+    print(n_gold, n_predict, n_correct, "精确度：", p, "召回率：", r, "f1值：", f1)
+
+
+if __name__ == '__main__':
+
+    device = 'cuda:0'
+
+    lr = 1e-5
+    batch_size = 16
+    n_epochs = 10
+
+    train_data, val_data, test_data = load_dataset()
+
+
+    train_dataset =Dataset(batch_size, 512, train_data)
+    test_dataset = Dataset(batch_size, 512, test_data)
+    #[data_x, data_x_mask, data_labels, data_span, offset1, pro1, appendix]
+
+
+
+    rep = get_type_rep().detach_().to(device)
+
+    model = SentenceClassification1(config.bert_dir, len(config.idx2tag),rep)
+    model.to(device)
+
+    parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
+    optimizer = AdamW(parameters, lr=lr, correct_bias=False)
+
+    ig = salient()
+
+
+    for idx in range(n_epochs):
+        model.train()
+
+        for batch in train_dataset.get_tqdm(device, True):
+            data_x, data_x_mask, data_labels, data_span, offset1, pro1, appendix = batch
+
+            instances = [[data_x[i], data_x_mask[i], data_labels[i], offset1[i], pro1[i]] for i in range(len(data_x))]
+            instances = [list(map(lambda x: x.unsqueeze(0), x)) for x in instances]  # 在第一个位置增加维度，构成一个新的列表
+
+            # print(instances[0])
+
+            # 把显著性归因值转为和data_x一样的tensor形式
+            res = ig.saliency_interpret(instances)
+            a = list(res.values())  # 获取dict的所有value
+            res_value = []
+            for i in a:
+                res_value.append(i['grad_input_1'])
+            salience = torch.Tensor(res_value)
+
+            #在这里拼到输入到model
+            #hh=data_x.detach().cpu().numpy() data_x [16,512]
+            loss = model(data_x, data_x_mask, data_labels,offset1, pro1, salience)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+            optimizer.step()
+            model.zero_grad()
+        #用训练集数据训练一个句子级别的分类器
+        save_model(model, 'model/salience_step_shao_sentence%d.ckp' % (idx))
+
+        ig = salient()
+
+        model.eval()
+        evaluate(model, device, test_dataset)
+
+
+
+
