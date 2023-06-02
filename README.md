@@ -1,3 +1,6 @@
+# SAMD ( Scientific Abstract Moves Dataset)
+The corpus for this study is selected from abstracts of conference papers in the field of NLP, including ACL, EMNLP, NAACL, which are included in the ACL Anthology. In total, there are 1,500 abstracts and 8,934 sentences.
+
 # Saliency_SR
 
 We provide prototype code of our paper "Move Structure Recognition in Scientific Papers with Saliency Attribution".
