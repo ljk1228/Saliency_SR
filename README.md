@@ -8,5 +8,5 @@ The code structures are:
 
 2) `salient_evluation.py` contains code for using the sentence-level classifier for move saliency attribution.
 
-3) `sentence_label_train_strong.py` contains code for grouping event types into different categories and training separate ED models.
+3) `sentence_label_train_strong.py` contains code for training saliency enhanced move structure recognition models.
 
