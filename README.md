@@ -25,9 +25,11 @@ The dataset is annotated based on an eight-step structure annotation scheme, whi
 8. Implication: Discussing the implications or potential applications of the research.
 
 ## Data Format
-The dataset is provided in a tabular format, with each row representing a sentence from the abstracts. The following columns are included:
-- Sentence: The original sentence from the abstract.
-- Label: The annotated move label for the sentence (Background, GAP, Method, Purpose, Result, Conclusion, Contribution, or Implication).
+The dataset is provided in JSON format, where each object represents a sentence from the abstracts. Each object has the following properties:
+- "sentence": The original sentence from the abstract.
+- "label": The annotated move labels for the sentence (Background, GAP, Method, Purpose, Result, Conclusion, Contribution, or Implication).
+- "offest": The offset of the sentence in the entire abstract.
+- "pro": The offset divided by the number of sentences in the abstract, to extract a proportional sentence position feature.
 
 ## Dataset Usage
 This dataset can be used for various research tasks related to scientific abstract analysis, move analysis, and discourse analysis. It provides valuable insights into the structure and organization of scientific abstracts in the NLP domain.
