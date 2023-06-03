@@ -32,7 +32,7 @@ The dataset is provided in JSON format, where each object represents a sentence 
 - "pro": The offset divided by the number of sentences in the abstract, to extract a proportional sentence position feature.
 
 ## Dataset Usage
-This dataset can be used for various research tasks related to scientific abstract analysis, move analysis, and discourse analysis. It provides valuable insights into the structure and organization of scientific abstracts in the NLP domain.
+This dataset can be used for various research tasks related to scientific abstract analysis, move analysis, and discourse analysis. It lays the foundation for subject knowledge mining, and also provides the possibility to give more accurate feedback and evaluation on the move structure and language characteristics of scientific writing., such as: logical continuity, expression integrity, etc.
 
 ## Dataset Citation
 If you use this dataset in your research or publication, please cite it as follows:
