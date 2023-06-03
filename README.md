@@ -14,7 +14,7 @@ The corpus for this dataset was carefully selected from abstracts of conference 
 The manual annotation process strictly followed the move analysis method, which is the most influential language use analysis method in the ESP (English for Specific Purposes) field. The sentence was taken as the smallest annotation unit. A combination of top-down and bottom-up annotation methods was employed to determine the move label of each sentence. The annotation was conducted by six professional annotators from the School of Foreign Languages. The inter-annotator agreement was measured using the Kappa coefficient, which was calculated to be 0.785, indicating a substantial agreement among the six annotators. This level of agreement is equivalent to about 93.375% of the corpus being independently annotated in a consistent manner.
 
 ## Annotation Schema
-The dataset is annotated based on an eight-step structure annotation scheme, which includes the following moves:
+The dataset is annotated based on an eight-move structure annotation scheme, which includes the following moves:
 1. Background: Providing the background and context of the research.
 2. GAP: Addressing the research gap or problem statement.
 3. Method: Describing the methodology or approach used in the research.
