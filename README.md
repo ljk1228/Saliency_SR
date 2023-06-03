@@ -36,8 +36,8 @@ This dataset can be used for various research tasks related to scientific abstra
 
 ## License
 You are free to:
-Share — copy and redistribute the material in any medium or format
-Adapt — remix, transform, and build upon the material
+- Share: copy and redistribute the material in any medium or format
+- Adapt: remix, transform, and build upon the material
 
 ## Acknowledgments
 We would like to express our gratitude to the six professional annotators from the School of Foreign Languages for their valuable contributions in manually annotating the dataset.
