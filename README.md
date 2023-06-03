@@ -1,4 +1,4 @@
-# Scientific Abstract Moves Dataset (SAMD) README
+# Scientific Abstract Moves Dataset (SAMD)
 
 ## Overview
 The Scientific Abstract Moves Dataset (SAMD) is a manually annotated dataset specifically created for the study of scientific abstract moves. It contains annotated abstracts from conference papers in the NLP domain, including ACL, EMNLP, and NAACL conferences, which are included in the ACL Anthology.
