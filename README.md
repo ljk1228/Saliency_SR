@@ -34,15 +34,10 @@ The dataset is provided in JSON format, where each object represents a sentence 
 ## Dataset Usage
 This dataset can be used for various research tasks related to scientific abstract analysis, move analysis, and discourse analysis. It lays the foundation for subject knowledge mining, and also provides the possibility to give more accurate feedback and evaluation on the move structure and language characteristics of scientific writing., such as: logical continuity, expression integrity, etc.
 
-## Dataset Citation
-If you use this dataset in your research or publication, please cite it as follows:
-[Include citation format]
-
 ## License
-[Specify the license under which the dataset is released, e.g., Creative Commons, MIT, etc.]
-
-## Contact Information
-If you have any questions or need further information regarding the dataset, please contact [Provide contact information].
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
 
 ## Acknowledgments
 We would like to express our gratitude to the six professional annotators from the School of Foreign Languages for their valuable contributions in manually annotating the dataset.
