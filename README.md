@@ -35,9 +35,16 @@ The dataset is provided in JSON format, where each object represents a sentence 
 This dataset can be used for various research tasks related to scientific abstract analysis, move analysis, and discourse analysis. It lays the foundation for subject knowledge mining, and also provides the possibility to give more accurate feedback and evaluation on the move structure and language characteristics of scientific writing., such as: logical continuity, expression integrity, etc.
 
 ## License
+The Scientific Abstract Moves Dataset (SAMD) is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
 You are free to:
-- Share: copy and redistribute the material in any medium or format
-- Adapt: remix, transform, and build upon the material
+
+- **Share**: Copy and redistribute the material in any medium or format.
+- **Adapt**: Remix, transform, and build upon the material for any purpose, even commercially.
+
+Please note that you must provide appropriate credit to the dataset by citing it properly, indicating any changes made, and providing a link to the license.
+
+For more details about the license, please visit the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) webpage.
 
 ## Acknowledgments
 We would like to express our gratitude to the six professional annotators from the School of Foreign Languages for their valuable contributions in manually annotating the dataset.
