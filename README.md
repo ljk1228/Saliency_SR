@@ -27,7 +27,7 @@ The dataset is annotated based on an eight-step structure annotation scheme, whi
 ## Data Format
 The dataset is provided in JSON format, where each object represents a sentence from the abstracts. Each object has the following properties:
 - "sentence": The original sentence from the abstract.
-- "label": The annotated move labels for the sentence (Background, GAP, Method, Purpose, Result, Conclusion, Contribution, or Implication).
+- "label": The annotated move labels for the sentence (BAC, GAP, MTD, PUR, RST, CLN and CTN represent Background, GAP, Method, Purpose, Result, Conclusion, Contribution and Implication respectively).
 - "offest": The offset of the sentence in the entire abstract.
 - "pro": The offset divided by the number of sentences in the abstract, to extract a proportional sentence position feature.
 
