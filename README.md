@@ -1,5 +1,7 @@
 # Scientific Abstract Moves Dataset
 
+# Source Code for CCKS-2023 Paper: "Move Structure Recognition in Scientific Papers with Saliency Attribution"
+
 ## Overview
 The Scientific Abstract Moves Dataset (SAMD) is a manually annotated dataset specifically created for the study of scientific abstract moves. It contains annotated abstracts from conference papers in the NLP domain, including ACL, EMNLP, and NAACL conferences, which are included in the ACL Anthology.
 
